@@ -21,26 +21,22 @@ struct ContentView: View {
         SceneView(scene: scene, options: [.allowsCameraControl])
             .frame(width: 400, height: 400)
             .onAppear {
-                
                 let material = SCNMaterial()
                 material.diffuse.contents = NSColor.blue
-                /*
-                let vertexShaderURL = Bundle.main.url(forResource: "Vert", withExtension: "metal")
-                let fragmentShaderURL = Bundle.main.url(forResource: "Frag", withExtension: "metal")
-
-                let vertexShader = try? String(contentsOf: vertexShaderURL!)
-                let fragmentShader = try? String(contentsOf: fragmentShaderURL!)
-
-                // Create a custom material with the loaded shaders
-                let customMaterial = SCNMaterial()
-                customMaterial.shaderModifiers = [
-                    .geometry: vertexShader!,
-                    .fragment: fragmentShader!
+                
+                /// creates a custom material with a custom shader and applies it to the model
+                let mat = SCNMaterial()
+                mat.metalness.contents = 0.5
+                // use a metal shader
+                mat.shaderModifiers = [
+                    SCNShaderModifierEntryPoint.fragment: """
+                    float3 color = float3(1.0, 1.0, 0.0);
+                    _output.color.rgb = color;
+                    """
                 ]
-                 */
-
+                
                 let modelNode = scene?.rootNode.childNode(withName: "Cube", recursively: true)
-                modelNode?.geometry?.materials = [material]
+                modelNode?.geometry?.materials = [mat]
             }
         
     }
